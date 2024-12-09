@@ -1,0 +1,5 @@
+local function setParticleEmitterColor(particleEmitter, color)
+    if particleEmitter:IsA("ParticleEmitter") then
+        particleEmitter.Color = ColorSequence.new(color)
+    end
+end
