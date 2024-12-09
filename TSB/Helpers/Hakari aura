@@ -1,0 +1,21 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local attachment = Instance.new("Attachment")
+
+local ParticleEmitter = Instance.new("ParticleEmitter")
+
+ParticleEmitter.Parent = character.HumanoidRootPart
+
+ParticleEmitter.FlipbookLayout = Enum.ParticleFlipbookLayout.Grid4x4
+ParticleEmitter.FlipbookMode = Enum.ParticleFlipbookMode.OneShot
+ParticleEmitter.Lifetime = NumberRange.new(0.5,0.5)
+ParticleEmitter.LightEmission = -1
+ParticleEmitter.LockedToPart = true
+ParticleEmitter.Rate = 2.5
+ParticleEmitter.Size = NumberSequence.new({NumberSequenceKeypoint.new(0,2,0),NumberSequenceKeypoint.new(1,2,0)})
+ParticleEmitter.Speed = NumberRange.new(0,0)
+ParticleEmitter.Texture = [[http://www.roblox.com/asset/?id=14904853757]]
+ParticleEmitter.ZOffset = -1
+ParticleEmitter.Spread = 0
