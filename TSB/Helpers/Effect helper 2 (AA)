@@ -1,0 +1,12 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Vfx = ReplicatedStorage.Resources.KJEffects["ImpactEffect"].Attachment:Clone()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+Vfx.Parent = character:WaitForChild("HumanoidRootPart")
+
+for _, child in ipairs(Vfx:GetChildren()) do
+    if child:IsA("ParticleEmitter") then
+        child:Emit(1) -- Emit 1 particle
+    end
+end
