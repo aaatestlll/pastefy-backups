@@ -1,0 +1,6 @@
+local args = {
+    [1] = "rbxassetid://(insert music id)",
+    [2] = game:GetService("Players").LocalPlayer.Character.Head
+}
+
+game:GetService("ReplicatedStorage").PlaySoundRemote:InvokeServer(unpack(args))
