@@ -1,0 +1,53 @@
+-- Create the button
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 100, 0, 50) -- Size of the button
+button.Position = UDim2.new(0.5, -50, 0.5, -25) -- Position in the center
+button.Text = "Fake Prey's Peril"
+button.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("ScreenGui")
+button.Draggable = true
+button.BorderSizePixel = 2
+button.BorderColor3 = Color3.fromRGB(0, 170, 255)
+button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Function to print when the button is clicked
+button.MouseButton1Click:Connect(function()
+    -- This script should be a LocalScript to run on the client
+
+-- Variables
+local Players = game:GetService("Players")
+local AnimationId = "12351854556" -- Replace with your animation ID
+
+-- Function to load and play animation
+local function playAnimation(player)
+    local character = player.Character
+    if not character then return end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+
+    -- Create a new Animation object
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. AnimationId
+
+    -- Create an AnimationTrack
+    local animationTrack = humanoid:LoadAnimation(animation)
+
+    -- Play the animation
+    animationTrack:Play()
+end
+
+-- Get the local player
+local player = Players.LocalPlayer
+
+-- Play animation when character is added
+player.CharacterAdded:Connect(function(character)
+    character:WaitForChild("Humanoid") -- Ensure Humanoid is loaded
+    playAnimation(player)
+end)
+
+-- If the character already exists
+if player.Character then
+    playAnimation(player)
+end
+end)
