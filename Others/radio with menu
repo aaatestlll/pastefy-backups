@@ -1,0 +1,100 @@
+-- Create the Screen GUI (initially disabled)
+local screenGui = Instance.new("ScreenGui")
+screenGui.Enabled = false  -- Initially set to false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a main frame for the Music Menu
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0.3, 0, 0.3, 0)
+mainFrame.Position = UDim2.new(0.35, 0, 0.35, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red background
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+-- Create a label for the Music Menu title
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Same red background
+titleLabel.Text = "Music Menu"
+titleLabel.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text
+titleLabel.TextScaled = true
+titleLabel.Font = Enum.Font.Cartoon
+titleLabel.Parent = mainFrame
+
+-- Create a TextBox for entering the Song ID
+local songIdInput = Instance.new("TextBox")
+songIdInput.Size = UDim2.new(0.9, 0, 0.2, 0)
+songIdInput.Position = UDim2.new(0.05, 0, 0.35, 0)
+songIdInput.PlaceholderText = "Song ID"
+songIdInput.Text = ""
+songIdInput.TextScaled = true
+songIdInput.Font = Enum.Font.SourceSans
+songIdInput.BackgroundColor3 = Color3.fromRGB(255, 255, 255)  -- White background
+songIdInput.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text
+songIdInput.Parent = mainFrame
+
+-- Create the Play button
+local playButton = Instance.new("TextButton")
+playButton.Size = UDim2.new(0.9, 0, 0.15, 0)
+playButton.Position = UDim2.new(0.05, 0, 0.6, 0)
+playButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)  -- Green background
+playButton.Text = "Play"
+playButton.TextScaled = true
+playButton.Font = Enum.Font.SourceSansBold
+playButton.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text
+playButton.Parent = mainFrame
+
+--[[Create the Stop button
+local stopButton = Instance.new("TextButton")
+stopButton.Size = UDim2.new(0.9, 0, 0.15, 0)
+stopButton.Position = UDim2.new(0.05, 0, 0.8, 0)
+stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)  -- Red background
+stopButton.Text = "Stop"
+stopButton.TextScaled = true
+stopButton.Font = Enum.Font.SourceSansBold
+stopButton.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Black text
+stopButton.Parent = mainFrame]]--
+
+-- Function to play the sound via PlaySoundRemote
+playButton.MouseButton1Click:Connect(function()
+    local songId = songIdInput.Text
+    if songId ~= "" then
+        local args = {
+            [1] = "rbxassetid://" .. songId,
+            [2] = game:GetService("Players").LocalPlayer.Character.Head
+        }
+        game:GetService("ReplicatedStorage").PlaySoundRemote:InvokeServer(unpack(args))
+    else
+        print("Please enter a valid Song ID.")
+    end
+end)
+
+--[[Function to stop the sound via PlaySoundRemote
+stopButton.MouseButton1Click:Connect(function()
+    local args = {
+        [1] = "stop",
+        [2] = game:GetService("Players").LocalPlayer.Character.Head
+    }
+    game:GetService("ReplicatedStorage").PlaySoundRemote:InvokeServer(unpack(args))
+end) ]]--
+
+-- Monitor when the "Radio" tool is equipped or unequipped
+local player = game.Players.LocalPlayer
+local backpack = player:WaitForChild("Backpack")
+
+-- Create the Radio tool and add it to the player's Backpack
+local tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Radio"
+tool.Parent = backpack
+
+-- Show GUI only when "Radio" is equipped
+tool.Equipped:Connect(function()
+    screenGui.Enabled = true  -- Show GUI when equipped
+end)
+
+tool.Unequipped:Connect(function()
+    screenGui.Enabled = false  -- Hide GUI when unequipped
+end)
