@@ -1,0 +1,50 @@
+local function blockRequests(url)
+    local blockedDomains = {
+        "https://discord.com",
+        "discord.com"
+        -- Note to self: add more websites if needed
+    }
+    for _, domain in ipairs(blockedDomains) do
+        if url:find(domain) then
+            return false
+        end
+    end
+    return true
+end
+
+local function copyToClipboard(text)
+    setclipboard(text)
+end
+
+local httpRequest
+httpRequest = hookfunction(http_request or request or syn.request, function(requestData)
+    if blockRequests(requestData.Url) then
+        return httpRequest(requestData)
+    else
+        -- Show a notification with the blocked URL
+        local NotificationBindable = Instance.new("BindableFunction")
+        NotificationBindable.OnInvoke = function(Text)
+            if Text == "Copy URL" then
+                copyToClipboard(requestData.Url)
+                print("URL copied to clipboard: " .. requestData.Url)
+            end
+        end
+
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Blocked Request";
+            Text = "Blocked an attempt to send data to: " .. requestData.Url;
+            Icon = ""; -- Add an icon if you want
+            Duration = 10; -- Duration of the notification
+            Button1 = "Copy URL"; -- Button to copy the URL
+            Callback = NotificationBindable;
+        })
+
+        warn("Blocked an attempt to send data to a blocked URL: " .. requestData.Url)
+        return nil
+    end
+end)
+
+local notifs = loadstring(game:HttpGet('https://pastefy.app/QjFZLYPx/raw'))()
+notifs.alert('also loaded ;3',nil,2,nil)
+task.wait(0.1)
+notifs.alert('Anti IP Log',Color3.new(0,1,0),2)
